@@ -7,12 +7,18 @@ import com.views.R;
 import com.views.QQ6.widget.DragLayout;
 import com.views.QQ6.widget.entity.ItemBean;
 import com.views.QQ6.widget.utils.ItemDataUtils;
+import com.zbar.lib.CaptureActivity;
+import com.zbar.lib.utils.PermissionTool;
 
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -22,6 +28,7 @@ public class MainActivity extends BaseActivity {
 	private ListView lv;
 	private ImageView ivIcon, ivBottom;
 	private QuickAdapter<ItemBean> quickAdapter;
+	private ImageButton ib_qrcode;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +64,7 @@ public class MainActivity extends BaseActivity {
 	private void initView() {
 		ivIcon = (ImageView) findViewById(R.id.iv_icon);
 		ivBottom = (ImageView) findViewById(R.id.iv_bottom);
+		ib_qrcode = (ImageButton) findViewById(R.id.ib_qrcode);
 
 		lv = (ListView) findViewById(R.id.lv);
 		lv.setAdapter(quickAdapter = new QuickAdapter<ItemBean>(this, R.layout.item_left_layout,
@@ -76,6 +84,29 @@ public class MainActivity extends BaseActivity {
 			@Override
 			public void onClick(View arg0) {
 				dl.open();
+			}
+		});
+		ib_qrcode.setOnClickListener(new OnClickListener() {
+
+			@Override
+			public void onClick(View v) {
+
+				if (PermissionTool.isCameraCanUse()) {
+
+					// 跳转到相关的拍照/扫描 页面
+					startActivity(new Intent(MainActivity.this, CaptureActivity.class));
+
+				} else {
+					// 好多授权http://zhidao.baidu.com/link?url=5LWq3A3dcEurjO9nnkbYae8RWdQSfIHWPDBdRP3jWoYUnFxKXMYKvE23jf7S8vtRQQ8urKkYI4mDk739AldRYYRLiB0NbjPMPm7bA1Ixnc7
+
+					// 当前APP没有摄像头权限弹层，或者其他相关提示
+					Intent intent = new Intent();
+					intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+					intent.setData(Uri.fromParts("package", getPackageName(), null));
+					startActivity(intent);
+
+				}
+
 			}
 		});
 	}

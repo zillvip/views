@@ -55,6 +55,7 @@
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="100dp"
+                        android:id="@+id/ib_qrcode"
                         android:background="@drawable/qrcode_selector" />
                 </RelativeLayout>
 
