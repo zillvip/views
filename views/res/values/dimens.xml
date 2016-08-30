@@ -6,5 +6,8 @@
     <dimen name="header_height">60dp</dimen>
     <dimen name="footer_height">90dp</dimen>
     <dimen name="footer_padding">10dp</dimen>
+    <dimen name="mis_image_size">120dp</dimen>
+    <dimen name="mis_space_size">2dp</dimen>
+    <dimen name="mis_folder_cover_size">72dp</dimen>
 
 </resources>

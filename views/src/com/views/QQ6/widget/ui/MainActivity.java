@@ -7,6 +7,7 @@ import com.views.R;
 import com.views.QQ6.widget.DragLayout;
 import com.views.QQ6.widget.entity.ItemBean;
 import com.views.QQ6.widget.utils.ItemDataUtils;
+import com.views.multi_image_selector.MultiImageSelectorActivity;
 import com.zbar.lib.CaptureActivity;
 import com.zbar.lib.utils.PermissionTool;
 
@@ -21,7 +22,6 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class MainActivity extends BaseActivity {
 	private DragLayout dl;
@@ -82,6 +82,9 @@ public class MainActivity extends BaseActivity {
 				switch (position) {
 				case 0:
 					startActivity(new Intent(MainActivity.this, com.views.pulltorefresh.ui.MainActivity.class));
+					break;
+				case 1:
+					startActivity(new Intent(MainActivity.this, MultiImageSelectorActivity.class));
 					break;
 
 				default:
