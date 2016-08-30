@@ -7,6 +7,7 @@
     <uses-sdk
         android:minSdkVersion="15"
         android:targetSdkVersion="23" />
+    <!-- 支付宝扫一扫start -->
 
     <uses-permission android:name="android.permission.CAMERA" />
     <uses-permission android:name="android.permission.FLASHLIGHT" />
@@ -14,14 +15,14 @@
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
-
+    <!-- 支付宝扫一扫end -->
     <application
         android:allowBackup="true"
         android:icon="@drawable/ic_launcher"
         android:label="@string/app_name"
         android:theme="@style/AppTheme" >
         <activity
-            android:name=".QQ6.widget.activity.MainActivity"
+            android:name="com.views.QQ6.widget.ui.MainActivity"
             android:label="@string/app_name" >
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -31,6 +32,15 @@
         </activity>
         <activity
             android:name="com.zbar.lib.CaptureActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".pulltorefresh.ui.MainActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".pulltorefresh.ui.XListViewActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".pulltorefresh.ui.XScrollViewActivity"
             android:screenOrientation="portrait" />
     </application>
 

@@ -1,4 +1,4 @@
-package com.views.QQ6.widget.activity;
+package com.views.QQ6.widget.ui;
 
 import com.joanzapata.android.BaseAdapterHelper;
 import com.joanzapata.android.QuickAdapter;
@@ -77,7 +77,16 @@ public class MainActivity extends BaseActivity {
 		lv.setOnItemClickListener(new OnItemClickListener() {
 			@Override
 			public void onItemClick(AdapterView<?> arg0, View arg1, int position, long arg3) {
-				Toast.makeText(MainActivity.this, "Click Item " + position, Toast.LENGTH_SHORT).show();
+				// Toast.makeText(MainActivity.this, "Click Item " + position,
+				// Toast.LENGTH_SHORT).show();
+				switch (position) {
+				case 0:
+					startActivity(new Intent(MainActivity.this, com.views.pulltorefresh.ui.MainActivity.class));
+					break;
+
+				default:
+					break;
+				}
 			}
 		});
 		ivIcon.setOnClickListener(new OnClickListener() {
