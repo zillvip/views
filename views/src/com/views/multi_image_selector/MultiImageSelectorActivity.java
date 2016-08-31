@@ -11,14 +11,18 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v4.app.FragmentActivity;
+import android.support.v7.app.ActionBar;
+import android.support.v7.app.AppCompatActivity;
+import android.support.v7.widget.Toolbar;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 
 /**
  * Multi image selector Created by Nereo on 2015/4/7. Updated by nereo on
  * 2016/1/19. Updated by nereo on 2016/5/18.
  */
-public class MultiImageSelectorActivity extends FragmentActivity implements MultiImageSelectorFragment.Callback {
+public class MultiImageSelectorActivity extends AppCompatActivity implements MultiImageSelectorFragment.Callback {
 
 	// Single choice
 	public static final int MODE_SINGLE = 0;
@@ -39,28 +43,28 @@ public class MultiImageSelectorActivity extends FragmentActivity implements Mult
 	private static final int DEFAULT_IMAGE_SIZE = 9;
 
 	private ArrayList<String> resultList = new ArrayList<String>();
-	// private Button mSubmitButton;
+	private Button mSubmitButton;
 	private int mDefaultCount = DEFAULT_IMAGE_SIZE;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		// setTheme(R.style.MIS_NO_ACTIONBAR);
+		setTheme(R.style.MIS_NO_ACTIONBAR);
 		setContentView(R.layout.mis_activity_default);
 
 		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
 			getWindow().setStatusBarColor(Color.BLACK);
 		}
-		//
-		// Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-		// if (toolbar != null) {
-		// // setSupportActionBar(toolbar);
-		// }
 
-		// final ActionBar actionBar = getSupportActionBar();
-		// if (actionBar != null) {
-		// actionBar.setDisplayHomeAsUpEnabled(true);
-		// }
+		Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+		if (toolbar != null) {
+			setSupportActionBar(toolbar);
+		}
+
+		final ActionBar actionBar = getSupportActionBar();
+		if (actionBar != null) {
+			actionBar.setDisplayHomeAsUpEnabled(true);
+		}
 
 		final Intent intent = getIntent();
 		mDefaultCount = intent.getIntExtra(EXTRA_SELECT_COUNT, DEFAULT_IMAGE_SIZE);
@@ -70,27 +74,27 @@ public class MultiImageSelectorActivity extends FragmentActivity implements Mult
 			resultList = intent.getStringArrayListExtra(EXTRA_DEFAULT_SELECTED_LIST);
 		}
 
-		// mSubmitButton = (Button) findViewById(R.id.commit);
-		// if (mode == MODE_MULTI) {
-		// updateDoneText(resultList);
-		// mSubmitButton.setVisibility(View.VISIBLE);
-		// mSubmitButton.setOnClickListener(new View.OnClickListener() {
-		// @Override
-		// public void onClick(View view) {
-		// if (resultList != null && resultList.size() > 0) {
-		// // Notify success
-		// Intent data = new Intent();
-		// data.putStringArrayListExtra(EXTRA_RESULT, resultList);
-		// setResult(RESULT_OK, data);
-		// } else {
-		// setResult(RESULT_CANCELED);
-		// }
-		// finish();
-		// }
-		// });
-		// } else {
-		// mSubmitButton.setVisibility(View.GONE);
-		// }
+		mSubmitButton = (Button) findViewById(R.id.commit);
+		if (mode == MODE_MULTI) {
+			updateDoneText(resultList);
+			mSubmitButton.setVisibility(View.VISIBLE);
+			mSubmitButton.setOnClickListener(new View.OnClickListener() {
+				@Override
+				public void onClick(View view) {
+					if (resultList != null && resultList.size() > 0) {
+						// Notify success
+						Intent data = new Intent();
+						data.putStringArrayListExtra(EXTRA_RESULT, resultList);
+						setResult(RESULT_OK, data);
+					} else {
+						setResult(RESULT_CANCELED);
+					}
+					finish();
+				}
+			});
+		} else {
+			mSubmitButton.setVisibility(View.GONE);
+		}
 
 		if (savedInstanceState == null) {
 			Bundle bundle = new Bundle();
@@ -122,19 +126,18 @@ public class MultiImageSelectorActivity extends FragmentActivity implements Mult
 	 * @param resultList
 	 *            selected image data
 	 */
-	// private void updateDoneText(ArrayList<String> resultList) {
-	// int size = 0;
-	// if (resultList == null || resultList.size() <= 0) {
-	// mSubmitButton.setText(R.string.mis_action_done);
-	// mSubmitButton.setEnabled(false);
-	// } else {
-	// size = resultList.size();
-	// mSubmitButton.setEnabled(true);
-	// }
-	// mSubmitButton.setText(
-	// getString(R.string.mis_action_button_string,
-	// getString(R.string.mis_action_done), size, mDefaultCount));
-	// }
+	private void updateDoneText(ArrayList<String> resultList) {
+		int size = 0;
+		if (resultList == null || resultList.size() <= 0) {
+			mSubmitButton.setText(R.string.mis_action_done);
+			mSubmitButton.setEnabled(false);
+		} else {
+			size = resultList.size();
+			mSubmitButton.setEnabled(true);
+		}
+		mSubmitButton.setText(
+				getString(R.string.mis_action_button_string, getString(R.string.mis_action_done), size, mDefaultCount));
+	}
 
 	@Override
 	public void onSingleImageSelected(String path) {
@@ -150,7 +153,7 @@ public class MultiImageSelectorActivity extends FragmentActivity implements Mult
 		if (!resultList.contains(path)) {
 			resultList.add(path);
 		}
-		// updateDoneText(resultList);
+		updateDoneText(resultList);
 	}
 
 	@Override
@@ -158,7 +161,7 @@ public class MultiImageSelectorActivity extends FragmentActivity implements Mult
 		if (resultList.contains(path)) {
 			resultList.remove(path);
 		}
-		// updateDoneText(resultList);
+		updateDoneText(resultList);
 	}
 
 	@Override
