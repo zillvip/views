@@ -19,9 +19,12 @@ import android.os.Vibrator;
 import android.view.SurfaceHolder;
 import android.view.SurfaceHolder.Callback;
 import android.view.SurfaceView;
+import android.view.View;
+import android.view.View.OnClickListener;
 import android.view.animation.Animation;
 import android.view.animation.LinearInterpolator;
 import android.view.animation.ScaleAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
@@ -50,6 +53,7 @@ public class CaptureActivity extends Activity implements Callback {
 	private int cropHeight = 0;
 	private RelativeLayout mContainer = null;
 	private RelativeLayout mCropLayout = null;
+	private Button mBtnLight;
 
 	public int getX() {
 		return x;
@@ -96,7 +100,14 @@ public class CaptureActivity extends Activity implements Callback {
 
 		mContainer = (RelativeLayout) findViewById(R.id.capture_containter);
 		mCropLayout = (RelativeLayout) findViewById(R.id.capture_crop_layout);
+		mBtnLight = (Button) findViewById(R.id.btn_light);
+		mBtnLight.setOnClickListener(new OnClickListener() {
 
+			@Override
+			public void onClick(View v) {
+				light();
+			}
+		});
 		ImageView mQrLineView = (ImageView) findViewById(R.id.capture_scan_line);
 		ScaleAnimation animation = new ScaleAnimation(1.0f, 1.0f, 0.0f, 1.0f);
 		animation.setRepeatCount(-1);
@@ -113,10 +124,12 @@ public class CaptureActivity extends Activity implements Callback {
 			flag = false;
 			// 开闪光灯
 			CameraManager.get().openLight();
+			mBtnLight.setText("关灯");
 		} else {
 			flag = true;
 			// 关闪光灯
 			CameraManager.get().offLight();
+			mBtnLight.setText("开灯");
 		}
 
 	}

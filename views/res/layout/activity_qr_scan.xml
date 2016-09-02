@@ -32,8 +32,8 @@
             android:layout_height="match_parent"
             android:layout_alignParentTop="true"
             android:layout_margin="5dp"
-            android:src="@drawable/kakalib_scan_ray"
-            android:contentDescription="@string/app_name" />
+            android:contentDescription="@string/app_name"
+            android:src="@drawable/kakalib_scan_ray" />
     </RelativeLayout>
 
     <ImageView
@@ -68,12 +68,24 @@
         android:contentDescription="@string/app_name" />
 
     <TextView
+        android:id="@+id/scan_tips"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/capture_crop_layout"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="50dp"
         android:text="@string/scan_tips"
+        android:textColor="@android:color/white"
+        android:textSize="15sp" />
+
+    <Button
+        android:id="@+id/btn_light"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/scan_tips"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="50dp"
+        android:text="开灯"
         android:textColor="@android:color/white"
         android:textSize="15sp" />
 
