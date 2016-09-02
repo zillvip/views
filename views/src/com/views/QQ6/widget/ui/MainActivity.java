@@ -11,10 +11,16 @@ import com.views.multi_image_selector.MultiImageSelectorActivity;
 import com.zbar.lib.CaptureActivity;
 import com.zbar.lib.utils.PermissionTool;
 
+import android.Manifest;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.provider.Settings;
+import android.support.v4.app.ActivityCompat;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.AdapterView;
@@ -29,6 +35,8 @@ public class MainActivity extends BaseActivity {
 	private ImageView ivIcon, ivBottom;
 	private QuickAdapter<ItemBean> quickAdapter;
 	private ImageButton ib_qrcode;
+
+	private int REQUEST_CAMERA = 2001;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -102,25 +110,86 @@ public class MainActivity extends BaseActivity {
 
 			@Override
 			public void onClick(View v) {
+				// 权限
+				// http://blog.csdn.net/hudashi/article/details/50775180
+				// 好多授权http://zhidao.baidu.com/link?url=5LWq3A3dcEurjO9nnkbYae8RWdQSfIHWPDBdRP3jWoYUnFxKXMYKvE23jf7S8vtRQQ8urKkYI4mDk739AldRYYRLiB0NbjPMPm7bA1Ixnc7
 
-				if (PermissionTool.isCameraCanUse()) {
+				// http://blog.csdn.net/hp910315/article/details/51174583
+				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
+					if (PermissionTool.isCameraCanUse()) {
+						// // 跳转到相关的拍照/扫描 页面
+						startActivity(new Intent(MainActivity.this, CaptureActivity.class));
 
-					// 跳转到相关的拍照/扫描 页面
-					startActivity(new Intent(MainActivity.this, CaptureActivity.class));
+					} else {
+						// // 当前APP没有摄像头权限弹层，或者其他相关提示
+						Intent intent = new Intent();
+						intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
+						intent.setData(Uri.fromParts("package", getPackageName(), null));
+						startActivity(intent);
 
+					}
 				} else {
-					// 好多授权http://zhidao.baidu.com/link?url=5LWq3A3dcEurjO9nnkbYae8RWdQSfIHWPDBdRP3jWoYUnFxKXMYKvE23jf7S8vtRQQ8urKkYI4mDk739AldRYYRLiB0NbjPMPm7bA1Ixnc7
-
-					// 当前APP没有摄像头权限弹层，或者其他相关提示
-					Intent intent = new Intent();
-					intent.setAction(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-					intent.setData(Uri.fromParts("package", getPackageName(), null));
-					startActivity(intent);
+					// Check if the Camera permission is already available.
+					if (ActivityCompat.checkSelfPermission(MainActivity.this,
+							Manifest.permission.CAMERA) != PackageManager.PERMISSION_GRANTED) {
+						requestCameraPermission();
+					} else {
+						// // 跳转到相关的拍照/扫描 页面
+						startActivity(new Intent(MainActivity.this, CaptureActivity.class));
+					}
 
 				}
+				// 需要注意的是安卓6.0后使用相机等涉及隐私的权限需要在代码内在申明，可通过以下方法：
+				// http://blog.csdn.net/lw_90/article/details/51892054
+				// if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+				// requestPermissions(
+				// new String[] { Manifest.permission.CAMERA,
+				// Manifest.permission.WRITE_EXTERNAL_STORAGE },
+				// CAMERA_JAVA_REQUEST_CODE);
+				// }
 
 			}
 		});
+	}
+
+	private void requestCameraPermission() {
+		requestPermissions(new String[] { Manifest.permission.CAMERA }, REQUEST_CAMERA);
+
+	}
+
+	@Override
+	public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+		if (requestCode == REQUEST_CAMERA) {
+			if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+				// 用户同意使用write
+				// 跳转到相关的拍照/扫描 页面
+				startActivity(new Intent(MainActivity.this, CaptureActivity.class));
+			} else {
+				// 用户不同意，向用户展示该权限作用
+				showDailog();
+			}
+		}
+	}
+
+	private void showDailog() {
+		AlertDialog dialog = new AlertDialog.Builder(this).setMessage("该摄像头需要赋予访问存储的权限，不开启将无法正常工作！")
+				.setPositiveButton("设置", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						// finish();
+						// // 跳转到设置界面
+						Intent intent = new Intent(Settings.ACTION_SETTINGS);
+						startActivity(intent);
+
+					}
+				}).setNegativeButton("取消", new DialogInterface.OnClickListener() {
+					@Override
+					public void onClick(DialogInterface dialog, int which) {
+						finish();
+					}
+				}).create();
+		dialog.show();
+
 	}
 
 }
