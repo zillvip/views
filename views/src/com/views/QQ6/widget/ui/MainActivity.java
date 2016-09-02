@@ -8,7 +8,7 @@ import com.views.QQ6.widget.DragLayout;
 import com.views.QQ6.widget.entity.ItemBean;
 import com.views.QQ6.widget.utils.ItemDataUtils;
 import com.views.multi_image_selector.MultiImageSelectorActivity;
-import com.zbar.lib.CaptureActivity;
+import com.views.multi_image_selector.SelectorPhotosActivity;
 import com.zbar.lib.utils.PermissionTool;
 
 import android.Manifest;
@@ -118,7 +118,7 @@ public class MainActivity extends BaseActivity {
 				if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
 					if (PermissionTool.isCameraCanUse()) {
 						// // 跳转到相关的拍照/扫描 页面
-						startActivity(new Intent(MainActivity.this, CaptureActivity.class));
+						startActivity(new Intent(MainActivity.this, SelectorPhotosActivity.class));
 
 					} else {
 						// // 当前APP没有摄像头权限弹层，或者其他相关提示
@@ -135,7 +135,7 @@ public class MainActivity extends BaseActivity {
 						requestCameraPermission();
 					} else {
 						// // 跳转到相关的拍照/扫描 页面
-						startActivity(new Intent(MainActivity.this, CaptureActivity.class));
+						startActivity(new Intent(MainActivity.this, SelectorPhotosActivity.class));
 					}
 
 				}
@@ -163,7 +163,7 @@ public class MainActivity extends BaseActivity {
 			if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
 				// 用户同意使用write
 				// 跳转到相关的拍照/扫描 页面
-				startActivity(new Intent(MainActivity.this, CaptureActivity.class));
+				startActivity(new Intent(MainActivity.this, SelectorPhotosActivity.class));
 			} else {
 				// 用户不同意，向用户展示该权限作用
 				showDailog();
