@@ -45,17 +45,17 @@
                         android:layout_height="wrap_content"
                         android:layout_centerVertical="true"
                         android:layout_marginLeft="15dp"
-                        android:text="名字:jiangqqlmj"
+                        android:text="名字:亮亮"
                         android:textColor="@android:color/black"
                         android:textSize="15sp" />
 
                     <ImageButton
+                        android:id="@+id/ib_qrcode"
                         android:layout_width="22dp"
                         android:layout_height="22dp"
                         android:layout_alignParentRight="true"
                         android:layout_centerVertical="true"
                         android:layout_marginRight="100dp"
-                        android:id="@+id/ib_qrcode"
                         android:background="@drawable/qrcode_selector" />
                 </RelativeLayout>
 
@@ -64,7 +64,7 @@
                     android:layout_height="wrap_content"
                     android:layout_gravity="center_vertical"
                     android:layout_marginLeft="15dp"
-                    android:text="QQ:781931404"
+                    android:text="QQ:1822282728"
                     android:textColor="@android:color/black"
                     android:textSize="13sp" />
             </LinearLayout>
